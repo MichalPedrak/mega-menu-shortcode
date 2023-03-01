@@ -1,6 +1,6 @@
 jQuery(document).ready(function(){
 
-    console.log('123')
+    console.log('1222222223')
 
     var $ = jQuery.noConflict();
 
@@ -13,6 +13,7 @@ jQuery(document).ready(function(){
                 this.parent = $('#megaMenu .parent-category a');
                 this.showElements();
                 this.lastItem = "";
+                this.lastImg = "";
 
             }
 
@@ -26,10 +27,13 @@ jQuery(document).ready(function(){
                         $(Menu.lastItem).each(function(){
                             $(this).css("display", "none")
                         })
+                        $(Menu.lastImg).css("display", "none")
 
                         let dataId = '#child-' + $(this).data('id');
+                        let imgId = '#img-' + $(this).data('id');
 
                         Menu.lastItem = dataId;
+                        Menu.lastImg= imgId;
 
 
 
@@ -37,6 +41,7 @@ jQuery(document).ready(function(){
                             $(this).css("display", "flex")
                         })
 
+                        $(imgId).css("display", "flex")
 
                     })
 
@@ -44,16 +49,20 @@ jQuery(document).ready(function(){
 
 
                         $(this).on('mouseout', function (){
-
-                            if($('.child-category').is(':hover')){
+                            console.log($(this).data('id'))
+                            if($('.child-category:hover')){
                                 return
                             }
 
                             let dataId = '#child-' + $(this).data('id');
+                            let imgId = '#img-' + $(this).data('id');
+
+                            alert(imgId)
 
                             $(dataId).each(function(){
                                 $(this).css("display", "none")
                             })
+                            $(imgId).css("display", "none")
                         })
 
 

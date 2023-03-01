@@ -21,17 +21,19 @@ function megaMenu($atts) {
 
 
     extract(shortcode_atts(array(
-        'only_main' => true,
+        'only_main' => '',
         'where' => 'meble',
     ), $atts));
 
+    $only_main === 'true' ? $only_main = true : $only_main = false;
 
     ?>
 
 
 
-    <div>
-        <div id="megaMenu" style="min-height: 400px; height: 400px; padding: 25px 60px;" >
+    <div >
+        <div id="megaMenu" style="min-height: 400px; height: 400px; padding: 25px 60px; background: #f5f5f5" >
+
 
             <?php
 
@@ -59,9 +61,10 @@ function megaMenu($atts) {
 
             ?>
 
-            <div class="menu-wraper d-flex">
-                <div class="parent-category  w-25 d-flex flex-wrap">
+            <div class="desktop-mega-menu menu-wraper">
+                <div class="parent-category d-flex flex-wrap <?= $only_main === true ?  'w-75 flex-column only-parent' : 'w-25' ?>" style="<?= $only_main === true ?  'height: 360px;' : '' ?>">
                     <?php
+
                     foreach ($all_categories as $cat) { ?>
 
                         <?php
@@ -75,8 +78,10 @@ function megaMenu($atts) {
                                 ?>
                                 <a data-id="<?php echo $category_id ?>" class="d-flex justify-content-between text-black" style=" padding-right: 120px; font-weight: 300; flex-basis: 100%; color: black; font-size: 15px; height: 40px;" href="<?php echo get_term_link( $cat->term_id, 'product_cat' ); ?>">
                                     <?= $cat->name ?>
+                                    <?php if(!$only_main){ ?>
                                     <img  style="position: relative; top: 5px; height: 10px; width: 10px;" src="https://italiastyle.runbyit.com/wp-content/uploads/2023/01/icon-chevron-right.svg">
-                                </a>
+                                    <?php } ?>
+                                    </a>
                                 <?php
 
                                 array_push($categoriesId, $category_id);
@@ -88,9 +93,12 @@ function megaMenu($atts) {
                     }
                     ?>
                 </div>
+
+                <?php if(!$only_main){?>
                 <div class="child-category w-50">
 
                         <?php
+
                         $showFirst = true;
                          foreach($categoriesId as $category) {?>
                              <div id="child-<?php echo $category ?>"  style="height: 100%; <?php echo $showFirst ?  'display:flex;' :  'display: none;'; $showFirst = false; ?> align-items: flex-start; flex-wrap: wrap; align-content: baseline; width: 100% !important;">
@@ -123,16 +131,68 @@ function megaMenu($atts) {
                         ?>
 
                     </div>
+                <?php } ?>
+
                 <div class="parent-category-image w-25">
+                    <?php if($only_main){?>
+                        <img src="https://italiastyle.runbyit.com/wp-content/uploads/2023/03/1_2603.webp">
+                    <?php } else {
+                         foreach($categoriesId as $category) {
+                             $thumbnail_id = get_term_meta( $category, 'thumbnail_id', true );
+
+                             ?>
+                         <img data-lazyloaded="0" style="display: none" id="img-<?php echo $category ?>" src="<?=  wp_get_attachment_url( $thumbnail_id, 'medium') ?>">
+                    <?php } } ?>
 
                 </div>
             </div>
+
+
+
+            <div class="mobile-mega-menu menu-wraper flex-wrap">
+
+                <?php
+
+                foreach ($all_categories as $cat) { ?>
+
+                    <?php
+                    if ($cat->category_parent == 0) {
+                        $category_id = $cat->term_id;
+                        $whereShow = get_field('where_show', 'product_cat_' . $category_id);
+                        if($whereShow == $where){
+                            ?>
+                            <div class="parent-category d-flex flex-wrap w-100">
+                                <a data-id="<?php echo $category_id ?>" class="d-flex justify-content-between text-black" style=" padding-right: 120px; font-weight: 300; flex-basis: 100%; color: black; font-size: 15px; height: 40px;" href="<?php echo get_term_link( $cat->term_id, 'product_cat' ); ?>">
+                                    <?= $cat->name ?>
+                                    <?php if(!$only_main){ ?>
+                                        <img  style="position: relative; top: 5px; height: 10px; width: 10px;" src="https://italiastyle.runbyit.com/wp-content/uploads/2023/01/icon-chevron-right.svg">
+                                    <?php } ?>
+                                </a>
+                            </div>
+                            <?php
+
+                        }
+                    } ?>
+
+                    <?php
+
+                }
+                ?>
+
+
+
+
+            </div>
+
+
         </div>
     </div>
 
 
-    <?php
 
+
+    <?php
+    wp_reset_postdata();
 }
 
 
