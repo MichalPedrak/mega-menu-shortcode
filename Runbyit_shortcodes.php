@@ -137,17 +137,20 @@ function megaMenu($atts) {
                     <?php if($only_main){?>
                         <img src="https://italiastyle.runbyit.com/wp-content/uploads/2023/03/1_2603.webp">
                     <?php } else {
+                        $showFirstImg = true;
                          foreach($categoriesId as $category) {
                              $thumbnail_id = get_term_meta( $category, 'thumbnail_id', true );
 
                              ?>
-                         <img data-lazyloaded="0" style="display: none" id="img-<?php echo $category ?>" src="<?=  wp_get_attachment_url( $thumbnail_id, 'medium') ?>">
-                    <?php } } ?>
+                         <img data-lazyloaded="0" style="<?= $showFirstImg ? "" : 'display: none'; ?>" id="img-<?php echo $category ?>" src="<?=  wp_get_attachment_url( $thumbnail_id, 'medium') ?>">
+                    <?php $showFirstImg = false;
+                         }
+                    } ?>
 
                 </div>
             </div>
 
-            <div class="mobile-mega-menu menu-wraper flex-wrap" style=" padding: 25px 60px;">
+            <div class="mobile-mega-menu menu-wraper flex-wrap" style="padding: 10px 15px 10px 15px; background: white;">
 
                 <?php
 
@@ -160,11 +163,11 @@ function megaMenu($atts) {
                         if($whereShow == $where){
                             ?>
                             <div class="d-flex flex-wrap w-100">
-                            <div class="parent-category d-flex flex-wrap w-100"> <!-- <?php echo get_term_link( $cat->term_id, 'product_cat' ); ?> -->
-                                <a data-id="<?php echo $category_id ?>" class="d-flex justify-content-between text-black" style=" padding-right: 120px; font-weight: 300; flex-basis: 100%; color: black; font-size: 15px; height: 40px;" href="#">
+                            <div class="parent-category d-flex flex-wrap w-100">
+                                <a data-id="<?php echo $category_id ?>" class="d-flex justify-content-between text-black" style="padding: 10px 15px 10px 15px; font-weight: 500; flex-basis: 100%; color: black; font-size: 15px; height: 40px;" href="<?= $only_main ?  get_term_link( $cat->term_id, 'product_cat' ) : "#" ; ?>">
                                     <?= $cat->name ?>
                                     <?php if(!$only_main){ ?>
-                                        <img  style="position: relative; top: 5px; height: 10px; width: 10px;" src="https://italiastyle.runbyit.com/wp-content/uploads/2023/01/icon-chevron-right.svg">
+                                        <img class="menu-arrow arrow-<?php echo $category_id ?>" style="position: relative; top: 5px; height: 10px; width: 10px; transform: rotate(90deg)" src="https://italiastyle.runbyit.com/wp-content/uploads/2023/01/icon-chevron-right.svg">
                                     <?php } ?>
                                 </a>
                             </div>
@@ -172,7 +175,9 @@ function megaMenu($atts) {
                             <?php if(!$only_main){?>
 
 
-                            <div class="child-mobile-<?php echo $category_id ?> mobile-child"  style="height: 100%; align-items: flex-start; flex-wrap: wrap; align-content: baseline; width: 100% !important;">
+                            <div class="child-mobile-<?php echo $category_id ?> child-mobile"  style="padding: 10px 15px 10px 15px; height: 100%; width: 100% !important;">
+                                <div style="display: flex; align-items: flex-start; flex-wrap: wrap; align-content: baseline; height: 100%; width: 100% !important;">
+
                                                 <?php
                                                 $args2 = array(
                                                     'taxonomy' => $taxonomy,
@@ -195,6 +200,7 @@ function megaMenu($atts) {
                                                         <?php
                                                     }
                                                 } ?>
+                              </div>
                             </div>
 
 

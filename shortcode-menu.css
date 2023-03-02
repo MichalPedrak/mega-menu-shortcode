@@ -1,3 +1,22 @@
-.mobile-child{
+.child-mobile{
     display: none;
+}
+
+#menu-main-1{
+    overflow-y: scroll;
+}
+
+.menu-arrow, .icon-down-arrow1{
+    transition: all 0.5s;
+}
+
+.rotate-arrow{
+    transform: rotate(270deg) !important;
+}
+.rotate-arrow1{
+    transform: rotate(180deg) !important;
+}
+
+.menu-hover{
+    font-weight: 500 !important;
 }
