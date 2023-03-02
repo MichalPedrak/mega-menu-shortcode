@@ -1,6 +1,5 @@
 jQuery(document).ready(function(){
 
-    console.log('1222222223')
 
     var $ = jQuery.noConflict();
 
@@ -10,7 +9,7 @@ jQuery(document).ready(function(){
 
             constructor() {
 
-                this.parent = $('#megaMenu .parent-category a');
+                this.parent = $('.megaMenu .desktop-mega-menu .parent-category a');
                 this.showElements();
                 this.lastItem = "";
                 this.lastImg = "";
@@ -49,7 +48,7 @@ jQuery(document).ready(function(){
 
 
                         $(this).on('mouseout', function (){
-                            console.log($(this).data('id'))
+
                             if($('.child-category:hover')){
                                 return
                             }
@@ -57,10 +56,10 @@ jQuery(document).ready(function(){
                             let dataId = '#child-' + $(this).data('id');
                             let imgId = '#img-' + $(this).data('id');
 
-                            alert(imgId)
 
                             $(dataId).each(function(){
                                 $(this).css("display", "none")
+
                             })
                             $(imgId).css("display", "none")
                         })
@@ -72,8 +71,81 @@ jQuery(document).ready(function(){
 
             }
 
+        class MobileMenu{
 
+        constructor() {
+
+            this.parent = $('.megaMenu .mobile-mega-menu .parent-category a');
+            this.showMobileElements();
+            // this.lastItem = "";
+            // this.lastImg = "";
+
+        }
+
+
+        showMobileElements(){
+
+            this.parent.each(function(e){
+                $(this).on('click', function (){
+
+
+                    // $(Menu.lastItem).each(function(){
+                    //     $(this).css("display", "none")
+                    // })
+                    // $(Menu.lastImg).css("display", "none")
+
+                    let dataId = '.child-mobile-' + $(this).data('id');
+
+
+                    // console.log($('#megaMenu'))
+                    // console.log($(dataId))
+
+                    // let child = document.querySelector(dataId)
+                    console.log(dataId)
+                    console.log($(dataId))
+                    $(dataId).show();
+                    // $(dataId).each(function(){
+                    //     $(this).css("display", "flex")
+                    // })
+                    // $('#megaMenu').find(".mobile-child").css("display", "flex")
+
+                    // $(imgId).css("display", "flex")
+
+                })
+
+
+
+                //
+                // $(this).on('mouseout', function (){
+                //     console.log($(this).data('id'))
+                //     // if($('.child-category:hover')){
+                //         // return
+                //     // }
+                //
+                //     let dataId = '#child-' + $(this).data('id');
+                //     // let imgId = '#img-' + $(this).data('id');
+                //
+                //     // alert(imgId)
+                //
+                //     $(dataId).each(function(){
+                //         $(this).css("display", "none")
+                //     })
+                //     // $(imgId).css("display", "none")
+                // })
+
+
+            })
+
+        }
+
+    }
+
+    $( window ).load(function() {
         let initMenu = new Menu();
+        let initMobileMenu = new MobileMenu();
+    });
+
+
 
 
 

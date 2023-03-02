@@ -15,7 +15,7 @@ function rbit_custom_scripts_menu() {
     wp_enqueue_style( 'rbit-custom-css12', plugins_url("shortcode-menu.css", __FILE__));
 
 }
-add_action( 'wp_enqueue_scripts', 'rbit_custom_scripts_menu' );
+
 
 function megaMenu($atts) {
 
@@ -31,8 +31,8 @@ function megaMenu($atts) {
 
 
 
-    <div >
-        <div id="megaMenu" style="min-height: 400px; height: 400px; padding: 25px 60px; background: #f5f5f5" >
+    <div>
+        <div class="megaMenu">
 
 
             <?php
@@ -61,8 +61,8 @@ function megaMenu($atts) {
 
             ?>
 
-            <div class="desktop-mega-menu menu-wraper">
-                <div class="parent-category d-flex flex-wrap <?= $only_main === true ?  'w-75 flex-column only-parent' : 'w-25' ?>" style="<?= $only_main === true ?  'height: 360px;' : '' ?>">
+            <div class="desktop-mega-menu menu-wraper" style="background: #f5f5f5; min-height: 400px; height: 400px; padding: 25px 60px;" >
+                <div class="parent-category d-flex flex-wrap <?= $only_main === true ?  'w-75 flex-column only-parent' : 'w-25' ?>">
                     <?php
 
                     foreach ($all_categories as $cat) { ?>
@@ -147,9 +147,7 @@ function megaMenu($atts) {
                 </div>
             </div>
 
-
-
-            <div class="mobile-mega-menu menu-wraper flex-wrap">
+            <div class="mobile-mega-menu menu-wraper flex-wrap" style=" padding: 25px 60px;">
 
                 <?php
 
@@ -161,13 +159,46 @@ function megaMenu($atts) {
                         $whereShow = get_field('where_show', 'product_cat_' . $category_id);
                         if($whereShow == $where){
                             ?>
-                            <div class="parent-category d-flex flex-wrap w-100">
-                                <a data-id="<?php echo $category_id ?>" class="d-flex justify-content-between text-black" style=" padding-right: 120px; font-weight: 300; flex-basis: 100%; color: black; font-size: 15px; height: 40px;" href="<?php echo get_term_link( $cat->term_id, 'product_cat' ); ?>">
+                            <div class="d-flex flex-wrap w-100">
+                            <div class="parent-category d-flex flex-wrap w-100"> <!-- <?php echo get_term_link( $cat->term_id, 'product_cat' ); ?> -->
+                                <a data-id="<?php echo $category_id ?>" class="d-flex justify-content-between text-black" style=" padding-right: 120px; font-weight: 300; flex-basis: 100%; color: black; font-size: 15px; height: 40px;" href="#">
                                     <?= $cat->name ?>
                                     <?php if(!$only_main){ ?>
                                         <img  style="position: relative; top: 5px; height: 10px; width: 10px;" src="https://italiastyle.runbyit.com/wp-content/uploads/2023/01/icon-chevron-right.svg">
                                     <?php } ?>
                                 </a>
+                            </div>
+
+                            <?php if(!$only_main){?>
+
+
+                            <div class="child-mobile-<?php echo $category_id ?> mobile-child"  style="height: 100%; align-items: flex-start; flex-wrap: wrap; align-content: baseline; width: 100% !important;">
+                                                <?php
+                                                $args2 = array(
+                                                    'taxonomy' => $taxonomy,
+                                                    'child_of' => $category_id,
+                                                    'parent' => $category,
+                                                    'orderby' => $orderby,
+                                                    'show_count' => $show_count,
+                                                    'pad_counts' => $pad_counts,
+                                                    'hierarchical' => $hierarchical,
+                                                    'title_li' => $title,
+                                                    'hide_empty' => $empty
+                                                );
+                                                $sub_cats = get_categories($args2);
+
+                                                if ($sub_cats) {
+                                                    foreach ($sub_cats as $sub_category) { ?>
+
+                                                        <a class="text-black gap-2" style="font-weight: 300; flex-basis: 100% !important; color: black; font-size: 15px; height: 40px;" href="<?php echo get_term_link( $sub_category->term_id, 'product_cat' ); ?>"><?= $sub_category->name?></a>
+
+                                                        <?php
+                                                    }
+                                                } ?>
+                            </div>
+
+
+                                <?php } ?>
                             </div>
                             <?php
 
@@ -198,3 +229,5 @@ function megaMenu($atts) {
 
 
 add_shortcode('megaMenu', 'megaMenu');
+
+add_action( 'wp_enqueue_scripts', 'rbit_custom_scripts_menu' );
